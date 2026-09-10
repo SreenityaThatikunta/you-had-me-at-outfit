@@ -1,0 +1,8 @@
+# Generated and media assets
+assets/
+Assets/
+demo-captures/
+outfit-preview.mp4
+
+# Local system files
+.DS_Store
