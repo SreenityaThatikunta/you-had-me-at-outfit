@@ -1,65 +1,100 @@
 # You Had Me at Outfit
 
-A Vite + React outfit picker that recommends daily looks from a closet, style mode, and local weather.
+A calm, weather-aware outfit picker for a personal wardrobe. It takes the decision out of getting dressed by choosing a practical look from the closet you already own.
 
-## Features
+**Live site:** [you-had-me-at-outfit.vercel.app](https://you-had-me-at-outfit.vercel.app/)
 
-- Daily outfit recommendation view
-- Closet browsing grouped by garment category
-- Style modes for college, cozy, going out, and polished looks
-- Weather-aware suggestions using Open-Meteo
-- Upload flow for adding new wardrobe pieces locally
+## Overview
 
-## Setup
+The app has two focused views:
 
-Install dependencies:
+- **Today’s outfit** uses local weather and the wardrobe catalogue to suggest a look, explain the choice, and offer an alternative pick.
+- **My closet** lets you browse the wardrobe by tops, bottoms, dresses, layers, and shoes.
+
+The monthly view keeps the rotation practical: weekdays lean towards college/clean casual looks; weekends lean relaxed casual. It also avoids repeating the same top within a week where possible.
+
+## Current features
+
+- Weather-aware outfit recommendations using Open-Meteo and optional browser location.
+- Deterministic, explainable outfit scoring based on temperature, rain, warmth, formality, tags, category coverage, and colour contrast.
+- Daily and monthly outfit planning with weekly top rotation.
+- Category-filtered closet browsing.
+- Responsive, dark editorial UI with a custom wardrobe mark and favicon.
+- Optimized WebP wardrobe assets committed in `public/wardrobe/`, so the full closet works on Vercel deployments.
+
+## Technical details
+
+| Area | Implementation |
+| --- | --- |
+| UI | React 19 with Vite |
+| Styling | Plain CSS, no component library |
+| Icons | Lucide React |
+| Weather | Open-Meteo via `src/data/weather.js` |
+| Recommendation engine | Local, deterministic scoring in `src/utils/recommendation.js` |
+| Wardrobe metadata | `src/data/wardrobe.js` |
+| Deployed garment images | `public/wardrobe/*.webp` |
+| Hosting | Vercel static deployment |
+
+The core recommendation flow does not need an API key. It runs in the browser from the wardrobe data plus the weather response.
+
+### Recommendation model
+
+Each garment has metadata such as category, dominant and accent colours, warmth, formality, and style tags. The scorer ranks valid combinations by:
+
+- fit for perceived temperature and rain;
+- occasion and vibe tags;
+- practical layers in cold or wet conditions;
+- balanced colour contrast and category coverage; and
+- avoiding sleepwear and unnecessary repeats.
+
+This is deliberately rules-based rather than generative, so the results remain quick and predictable.
+
+## Run locally
 
 ```bash
 npm install
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-Build for production:
+The local server starts at the URL Vite prints, usually `http://localhost:5173`.
 
 ```bash
 npm run build
-```
-
-Preview the production build:
-
-```bash
 npm run preview
 ```
 
-## Assets
+## Project structure
 
-Wardrobe images are stored locally in `assets/` and are intentionally ignored by Git. To run the current starter closet exactly as-is, add the referenced image files under `assets/generated-clothes/`.
+```text
+src/
+  components/        UI panels and wardrobe cards
+  data/              starter wardrobe and weather client
+  utils/             recommendation and image-prep helpers
+public/
+  favicon.png        browser tab icon
+  wardrobe/          optimized deployable garment images
+```
 
-The app source is committed without those private/local assets.
+`assets/` remains ignored because it contains high-resolution local source images. The deployable WebP copies live in `public/wardrobe/` instead.
 
-## AI garment details
+## Parked features
 
-When an image is added through **Add a piece to your closet**, the development server can use OpenAI vision to prefill the piece name, category, warmth, dressiness, and tags. The app keeps those fields editable and continues with the normal local image cleanup if AI is unavailable.
+These experiments remain in the codebase but are intentionally not exposed in the product UI.
 
-1. Copy `.env.example` to `.env`.
-2. Set `OPENAI_API_KEY` to an OpenAI API key.
-3. Run `npm run dev` normally.
+### Personal closet uploads and AI garment tagging
 
-The key stays in Vite's server process; do not use a `VITE_` prefix. The provided endpoint is for Vite development. Before deploying, move the same `/api/garment-analysis` handler to your host's serverless/API route and set `OPENAI_API_KEY` in that host's secret manager.
+`UploadPanel` can prepare a clothing photo locally and call `/api/garment-analysis` to prefill a garment name, category, warmth, dressiness, and tags. The “Add a piece to your closet” entry point is hidden while the personal-upload experience is being reconsidered.
 
-### Parked: adding personal closet pieces
+The Vite development middleware reads `OPENAI_API_KEY` from `.env`; copy `.env.example` if you want to explore the prototype. Never expose that key through a `VITE_` variable. A production version would need a real serverless/API route and secret manager.
 
-The “Add a piece to your closet” interface is currently hidden from the app. Its upload and local-storage implementation remains in the codebase while the product direction for personal uploads is decided.
+### AI photo polishing
 
-### Parked: AI photo polishing
+`/api/polish-garment` is a proof of concept that uses image editing to make a catalog-style cutout and then removes a solid green backdrop locally. It is parked because image editing requires API credits and generated output needs a fidelity review before it is suitable for personal clothing photos.
 
-The project contains a server-side `/api/polish-garment` proof of concept for creating a catalog-style cutout with image editing and removing a solid green background locally. The upload UI does not expose this feature right now. It is parked pending a decision on API credits, generated-image fidelity, and whether a browser-only background-removal option is preferable.
+### Wardrobe photo-polisher skill
 
-## Agent Skill
+For curating **starter wardrobe assets**, the repository includes [`wardrobe-photo-polisher`](.agents/skills/wardrobe-photo-polisher/SKILL.md). It turns raw source photos into transparent, polished catalogue assets and registers them in the wardrobe data. This is a development workflow, not a live app feature.
 
-This repo includes a Codex skill at `.agents/skills/wardrobe-photo-polisher/SKILL.md`. People using Codex can use it to turn raw clothing or shoe photos into polished transparent catalog images, save them into `assets/generated-clothes/`, and wire the new pieces into `src/data/wardrobe.js`.
+## Deployment notes
+
+Vercel deploys from the GitHub repository. Because every image used by the live wardrobe is in `public/wardrobe/`, no local `assets/` folder is required for a production build.
