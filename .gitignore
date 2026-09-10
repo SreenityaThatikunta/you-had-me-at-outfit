@@ -1,8 +1,20 @@
-# Generated and media assets
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Generated and local media assets
 assets/
 Assets/
-demo-captures/
-outfit-preview.mp4
 
-# Local system files
+# Local app/agent files
+.agents/
+.codex/
+
+# Environment files
+.env
+.env.*
+
+# System files
 .DS_Store
