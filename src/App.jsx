@@ -2,15 +2,25 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ClosetPanel } from "./components/ClosetPanel";
 import { RecommendationPanel } from "./components/RecommendationPanel";
-import { UploadPanel } from "./components/UploadPanel";
 import { WeatherPanel } from "./components/WeatherPanel";
 import { STARTER_ITEMS, STYLE_MODES } from "./data/wardrobe";
 import { coordsForCity, fetchOpenMeteoWeather, fallbackCityCoords } from "./data/weather";
 import { outfitReason, recommendMonthlyOutfits } from "./utils/recommendation";
 import { groupByCategory } from "./utils/wardrobe";
 
+const CUSTOM_ITEMS_KEY = "you-had-me-at-outfit.custom-items";
+
+function loadCustomItems() {
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(CUSTOM_ITEMS_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export function App() {
-  const [items, setItems] = useState(STARTER_ITEMS);
+  const [items, setItems] = useState(() => [...loadCustomItems(), ...STARTER_ITEMS]);
   const [view, setView] = useState(() => window.location.hash === "#closet" ? "closet" : "outfit");
   const [styleMode, setStyleMode] = useState("college");
   const [city, setCity] = useState("");
@@ -33,6 +43,15 @@ export function App() {
     if (!weatherStarted.current) { weatherStarted.current = true; loadLiveWeather(); }
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
+
+  useEffect(() => {
+    const customItems = items.filter((item) => item.source === "custom");
+    try {
+      window.localStorage.setItem(CUSTOM_ITEMS_KEY, JSON.stringify(customItems));
+    } catch {
+      // Keep the session usable if the browser refuses another saved image.
+    }
+  }, [items]);
 
   async function loadWeather(coords, request) {
     try {
@@ -91,7 +110,6 @@ export function App() {
         <RecommendationPanel styleMode={styleMode} setStyleMode={(mode) => { setStyleMode(mode); setShuffleKey(0); }} outfit={outfit} monthlyOutfits={monthlyOutfits} reason={outfitReason(outfit, weather, todayPlan?.styleLabel || context.label, todayPlan?.dayIndex >= 5 ? "relaxed casual" : "clean casual")} onShuffle={() => setShuffleKey((key) => key + 1)} />
       </> : <>
         <ClosetPanel items={items} grouped={grouped} onRemove={(id) => setItems((current) => current.filter((item) => item.id !== id))} />
-        <details className="add-piece"><summary>Add a piece to your closet</summary><UploadPanel onAdd={(item) => setItems((current) => [item, ...current])} /></details>
       </>}
       <footer><span>Your clothes. A fresh combination.</span><span>Made for the everyday.</span></footer>
     </main>

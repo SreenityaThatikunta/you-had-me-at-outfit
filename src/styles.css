@@ -40,3 +40,5 @@
 @media(max-width:650px){.calendar-section{padding-top:18px}.calendar-heading{margin-bottom:14px}.calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px}.calendar-day{min-height:78px}.month-preview{width:66px;height:40px}}
 
 @media(max-width:430px){.calendar-grid{grid-template-columns:1fr}.calendar-day{grid-template-columns:36px 1fr;min-height:70px}.month-preview{width:68px;height:40px}}
+
+.photo-drop{background:#242528}.photo-drop input:disabled{cursor:default}.import-status{display:flex;align-items:center;gap:7px;color:#bfd8cc;font-size:.8125rem}
