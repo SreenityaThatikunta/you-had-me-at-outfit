@@ -41,3 +41,7 @@ npm run preview
 Wardrobe images are stored locally in `assets/` and are intentionally ignored by Git. To run the current starter closet exactly as-is, add the referenced image files under `assets/generated-clothes/`.
 
 The app source is committed without those private/local assets.
+
+## Agent Skill
+
+This repo includes a Codex skill at `.agents/skills/wardrobe-photo-polisher/SKILL.md`. People using Codex can use it to turn raw clothing or shoe photos into polished transparent catalog images, save them into `assets/generated-clothes/`, and wire the new pieces into `src/data/wardrobe.js`.
