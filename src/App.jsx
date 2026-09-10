@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ClosetPanel } from "./components/ClosetPanel";
 import { RecommendationPanel } from "./components/RecommendationPanel";
 import { WeatherPanel } from "./components/WeatherPanel";
-import { STARTER_ITEMS, STYLE_MODES } from "./data/wardrobe";
+import { STARTER_ITEMS } from "./data/wardrobe";
 import { coordsForCity, fetchOpenMeteoWeather, fallbackCityCoords } from "./data/weather";
 import { outfitReason, recommendMonthlyOutfits } from "./utils/recommendation";
 import { groupByCategory } from "./utils/wardrobe";
@@ -22,7 +22,6 @@ function loadCustomItems() {
 export function App() {
   const [items, setItems] = useState(() => [...loadCustomItems(), ...STARTER_ITEMS]);
   const [view, setView] = useState(() => window.location.hash === "#closet" ? "closet" : "outfit");
-  const [styleMode, setStyleMode] = useState("college");
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState("");
@@ -30,8 +29,7 @@ export function App() {
   const [shuffleKey, setShuffleKey] = useState(0);
   const weatherStarted = useRef(false);
   const weatherRequest = useRef(0);
-  const selectedMode = STYLE_MODES.find((mode) => mode.id === styleMode) || STYLE_MODES[0];
-  const context = useMemo(() => ({ weather, occasion: selectedMode.occasion, vibe: selectedMode.vibe, label: selectedMode.label, shuffleKey }), [weather, selectedMode, shuffleKey]);
+  const context = useMemo(() => ({ weather, shuffleKey }), [weather, shuffleKey]);
   const monthlyOutfits = useMemo(() => recommendMonthlyOutfits(items, context), [items, context]);
   const todayPlan = useMemo(() => monthlyOutfits.weeks.flat().find((cell) => cell?.dateNumber === new Date().getDate()), [monthlyOutfits]);
   const outfit = todayPlan?.outfit || null;
@@ -106,7 +104,7 @@ export function App() {
       </header>
       {view === "outfit" ? <>
         <WeatherPanel weather={weather} city={city} setCity={setCity} loading={loadingWeather} error={weatherError} onCity={loadCityWeather} onGeo={loadLiveWeather} />
-        <RecommendationPanel styleMode={styleMode} setStyleMode={(mode) => { setStyleMode(mode); setShuffleKey(0); }} outfit={outfit} monthlyOutfits={monthlyOutfits} reason={outfitReason(outfit, weather, todayPlan?.styleLabel || context.label, todayPlan?.dayIndex >= 5 ? "relaxed casual" : "clean casual")} onShuffle={() => setShuffleKey((key) => key + 1)} />
+        <RecommendationPanel outfit={outfit} monthlyOutfits={monthlyOutfits} reason={outfitReason(outfit, weather, todayPlan?.styleLabel || "Today's pick", todayPlan?.dayIndex >= 5 ? "relaxed casual" : "clean casual")} onShuffle={() => setShuffleKey((key) => key + 1)} />
       </> : <>
         <ClosetPanel items={items} grouped={grouped} onRemove={(id) => setItems((current) => current.filter((item) => item.id !== id))} />
       </>}

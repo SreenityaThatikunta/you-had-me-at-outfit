@@ -1,6 +1,5 @@
 import React from "react";
 import { Shuffle } from "lucide-react";
-import { STYLE_MODES } from "../data/wardrobe";
 import { GarmentThumb } from "./GarmentThumb";
 
 const labels = { top: "Top", bottom: "Bottom", shoes: "Shoes", dress: "Dress" };
@@ -32,10 +31,10 @@ function MonthOutfitPreview({ outfit }) {
   </div>;
 }
 
-export function RecommendationPanel({ styleMode, setStyleMode, outfit, monthlyOutfits, reason, onShuffle }) {
+export function RecommendationPanel({ outfit, monthlyOutfits, reason, onShuffle }) {
   const layer = outfit?.items.find((item) => item.category === "outerwear");
   return <section className="recommendation-panel" aria-label="Today's outfit">
-    <div className="outfit-toolbar"><h2>Today's outfit</h2><label className="style-control"><span>Style mode</span><select aria-label="Style mode" value={styleMode} onChange={(event) => setStyleMode(event.target.value)}>{STYLE_MODES.map((mode) => <option value={mode.id} key={mode.id}>{mode.label}</option>)}</select></label></div>
+    <div className="outfit-toolbar"><h2>Today's outfit</h2></div>
     <OutfitPieces outfit={outfit} />
     {layer && <div className="layer-note"><GarmentThumb item={layer} /><span>Bring a layer<strong>{layer.name}</strong></span></div>}
     <div className="outfit-bottom"><p>{reason}</p><button className="primary shuffle" type="button" disabled={!outfit} onClick={onShuffle}><Shuffle size={16} /> Pick another</button></div>
