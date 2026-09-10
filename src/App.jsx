@@ -99,13 +99,12 @@ export function App() {
   return (
     <main className="app-shell">
       <header className="site-header">
-        <a className="wordmark" href="#outfit">you had me at outfit<span className="brand-period">.</span></a>
+        <a className="wordmark" href="#outfit"><img className="brand-mark" src="/wardrobe-mark.png" alt="" />you had me at outfit<span className="brand-period">.</span></a>
         <a className="nav-link" href={view === "outfit" ? "#closet" : "#outfit"}>
           {view === "outfit" ? <>My closet <span className="nav-count">{items.length}</span><ArrowUpRight size={15} /></> : <><ArrowLeft size={15} /> Back to outfit</>}
         </a>
       </header>
       {view === "outfit" ? <>
-        <div className="page-intro"><p className="eyebrow">THE DAILY PICK</p><h1>A little less deciding.<br /><em>A little more you.</em></h1></div>
         <WeatherPanel weather={weather} city={city} setCity={setCity} loading={loadingWeather} error={weatherError} onCity={loadCityWeather} onGeo={loadLiveWeather} />
         <RecommendationPanel styleMode={styleMode} setStyleMode={(mode) => { setStyleMode(mode); setShuffleKey(0); }} outfit={outfit} monthlyOutfits={monthlyOutfits} reason={outfitReason(outfit, weather, todayPlan?.styleLabel || context.label, todayPlan?.dayIndex >= 5 ? "relaxed casual" : "clean casual")} onShuffle={() => setShuffleKey((key) => key + 1)} />
       </> : <>

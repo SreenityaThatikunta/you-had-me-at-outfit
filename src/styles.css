@@ -42,3 +42,12 @@
 @media(max-width:430px){.calendar-grid{grid-template-columns:1fr}.calendar-day{grid-template-columns:36px 1fr;min-height:70px}.month-preview{width:68px;height:40px}}
 
 .photo-drop{background:#242528}.photo-drop input:disabled{cursor:default}.import-status{display:flex;align-items:center;gap:7px;color:#bfd8cc;font-size:.8125rem}
+
+/* Keep the weather as quiet context for the recommendation, not a second section. */
+.site-header{border-bottom:0;padding-bottom:18px}
+.weather-panel{padding:0 0 8px;border-bottom:0}
+.weather-line{min-height:32px}
+.weather-summary{font-size:.8125rem}
+.text-button{font-size:.8125rem}
+.wordmark{display:inline-flex;align-items:center;gap:9px}
+.brand-mark{width:25px;height:25px;object-fit:contain}
