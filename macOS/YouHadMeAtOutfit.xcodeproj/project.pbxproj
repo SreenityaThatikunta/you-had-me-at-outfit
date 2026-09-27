@@ -1,0 +1,323 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* OutfitWidgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* OutfitWidgetApp.swift */; };
+		A10000000000000000000002 /* OutfitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* OutfitStore.swift */; };
+		A10000000000000000000003 /* OutfitWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* OutfitWidget.swift */; };
+		A10000000000000000000004 /* OutfitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* OutfitStore.swift */; };
+		A10000000000000000000005 /* OutfitWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* OutfitWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A30000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A40000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A50000000000000000000002;
+			remoteInfo = OutfitWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A60000000000000000000001 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A10000000000000000000005 /* OutfitWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* OutfitWidgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutfitWidgetApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* OutfitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutfitStore.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* OutfitWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutfitWidget.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* OutfitWidgetApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = OutfitWidgetApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000005 /* OutfitWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = OutfitWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000006 /* OutfitWidgetApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OutfitWidgetApp.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000007 /* OutfitWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OutfitWidgetExtension.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A70000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A70000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A80000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A80000000000000000000002 /* OutfitWidgetApp */,
+				A80000000000000000000003 /* OutfitWidgetExtension */,
+				A80000000000000000000004 /* Shared */,
+				A80000000000000000000005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A80000000000000000000002 /* OutfitWidgetApp */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* OutfitWidgetApp.swift */,
+				A20000000000000000000006 /* OutfitWidgetApp.entitlements */,
+			);
+			path = OutfitWidgetApp;
+			sourceTree = "<group>";
+		};
+		A80000000000000000000003 /* OutfitWidgetExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000003 /* OutfitWidget.swift */,
+				A20000000000000000000007 /* OutfitWidgetExtension.entitlements */,
+			);
+			path = OutfitWidgetExtension;
+			sourceTree = "<group>";
+		};
+		A80000000000000000000004 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000002 /* OutfitStore.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A80000000000000000000005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000004 /* OutfitWidgetApp.app */,
+				A20000000000000000000005 /* OutfitWidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* OutfitWidgetApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A90000000000000000000001 /* Build configuration list for PBXNativeTarget "OutfitWidgetApp" */;
+			buildPhases = (
+				A70000000000000000000001 /* Frameworks */,
+				AA0000000000000000000001 /* Sources */,
+				A60000000000000000000001 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AB0000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = OutfitWidgetApp;
+			productName = OutfitWidgetApp;
+			productReference = A20000000000000000000004 /* OutfitWidgetApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A50000000000000000000002 /* OutfitWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A90000000000000000000002 /* Build configuration list for PBXNativeTarget "OutfitWidgetExtension" */;
+			buildPhases = (
+				A70000000000000000000002 /* Frameworks */,
+				AA0000000000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OutfitWidgetExtension;
+			productName = OutfitWidgetExtension;
+			productReference = A20000000000000000000005 /* OutfitWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A40000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					A50000000000000000000002 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = A90000000000000000000003 /* Build configuration list for PBXProject "YouHadMeAtOutfit" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A80000000000000000000001;
+			productRefGroup = A80000000000000000000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* OutfitWidgetApp */,
+				A50000000000000000000002 /* OutfitWidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA0000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* OutfitWidgetApp.swift in Sources */,
+				A10000000000000000000002 /* OutfitStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA0000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000003 /* OutfitWidget.swift in Sources */,
+				A10000000000000000000004 /* OutfitStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB0000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A50000000000000000000002 /* OutfitWidgetExtension */;
+			targetProxy = A30000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AC0000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+			};
+			name = Debug;
+		};
+		AC0000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+			};
+			name = Release;
+		};
+		AC0000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OutfitWidgetApp/OutfitWidgetApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OutfitWidgetApp/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AC0000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OutfitWidgetApp/OutfitWidgetApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OutfitWidgetApp/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		AC0000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OutfitWidgetExtension/OutfitWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OutfitWidgetExtension/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AC0000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OutfitWidgetExtension/OutfitWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OutfitWidgetExtension/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A90000000000000000000001 /* Build configuration list for PBXNativeTarget "OutfitWidgetApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC0000000000000000000003 /* Debug */,
+				AC0000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A90000000000000000000002 /* Build configuration list for PBXNativeTarget "OutfitWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC0000000000000000000005 /* Debug */,
+				AC0000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A90000000000000000000003 /* Build configuration list for PBXProject "YouHadMeAtOutfit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC0000000000000000000001 /* Debug */,
+				AC0000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A40000000000000000000001 /* Project object */;
+}

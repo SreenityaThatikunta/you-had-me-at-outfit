@@ -17,3 +17,8 @@ Assets/
 
 # System files
 .DS_Store
+
+# Local Xcode state and build products
+DerivedData/
+*.xcuserstate
+xcuserdata/
