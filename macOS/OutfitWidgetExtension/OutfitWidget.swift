@@ -38,9 +38,9 @@ private let fallbackOutfit = OutfitSnapshot(
     style: "Clean casual",
     reason: "A ready-to-wear combination from your wardrobe.",
     pieces: [
-        OutfitPiece(name: "Olive Cropped Polo", image: ""),
-        OutfitPiece(name: "Faded Blue Jeans", image: ""),
-        OutfitPiece(name: "White Samba Sneakers", image: "")
+        OutfitPiece(name: "Olive Cropped Polo", image: "https://you-had-me-at-outfit.vercel.app/wardrobe/olive-polo.webp"),
+        OutfitPiece(name: "Faded Blue Jeans", image: "https://you-had-me-at-outfit.vercel.app/wardrobe/faded-blue-jeans.webp"),
+        OutfitPiece(name: "White Samba Sneakers", image: "https://you-had-me-at-outfit.vercel.app/wardrobe/white-samba-sneakers.webp")
     ],
     updatedAt: ""
 )
@@ -61,7 +61,20 @@ private struct OutfitWidgetView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(outfit.title.uppercased()).font(.caption2.weight(.bold)).foregroundStyle(.secondary)
             Text(outfit.style).font(.title3.weight(.semibold)).lineLimit(1)
-            VStack(alignment: .leading, spacing: 3) { ForEach(outfit.pieces.prefix(3)) { piece in Label(piece.name, systemImage: "checkmark.circle.fill").font(.caption).lineLimit(1) } }
+            HStack(spacing: 10) {
+                ForEach(outfit.pieces.prefix(3)) { piece in
+                    VStack(spacing: 3) {
+                        AsyncImage(url: URL(string: piece.image)) { image in
+                            image.resizable().scaledToFit()
+                        } placeholder: {
+                            Image(systemName: "hanger").foregroundStyle(.secondary)
+                        }
+                        .frame(width: 72, height: 72)
+                        .background(.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
             Spacer(minLength: 0)
             Text(outfit.reason).font(.caption2).foregroundStyle(.secondary).lineLimit(2)
         }.padding().widgetURL(URL(string: "https://you-had-me-at-outfit.vercel.app/"))
