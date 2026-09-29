@@ -26,9 +26,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5</string>
+	<string>6</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to suggest an outfit for the weather near you.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
