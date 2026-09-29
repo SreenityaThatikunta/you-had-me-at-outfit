@@ -6,21 +6,20 @@ import AppKit
 struct OutfitEntry: TimelineEntry {
     let date: Date
     let outfit: OutfitSnapshot
-    let images: [String: Data]
 }
 
 struct OutfitProvider: TimelineProvider {
     private let feedURL = URL(string: "https://you-had-me-at-outfit.vercel.app/widget-outfits.json")!
 
-    func placeholder(in context: Context) -> OutfitEntry { OutfitEntry(date: .now, outfit: fallbackOutfit, images: [:]) }
+    func placeholder(in context: Context) -> OutfitEntry { OutfitEntry(date: .now, outfit: fallbackOutfit) }
 
     func getSnapshot(in context: Context, completion: @escaping (OutfitEntry) -> Void) {
-        Task { completion(await entry(for: await todayOutfit())) }
+        Task { completion(OutfitEntry(date: .now, outfit: await todayOutfit())) }
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<OutfitEntry>) -> Void) {
         Task {
-            let entry = await entry(for: await todayOutfit())
+            let entry = OutfitEntry(date: .now, outfit: await todayOutfit())
             let nextRefresh = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: .now)) ?? .now.addingTimeInterval(60 * 60 * 24)
             completion(Timeline(entries: [entry], policy: .after(nextRefresh)))
         }
@@ -35,17 +34,6 @@ struct OutfitProvider: TimelineProvider {
         return feed.outfits[(day - 1) % feed.outfits.count]
     }
 
-    private func entry(for outfit: OutfitSnapshot) async -> OutfitEntry {
-        var images: [String: Data] = [:]
-        for piece in outfit.pieces {
-            guard let url = URL(string: piece.image),
-                  let (data, response) = try? await URLSession.shared.data(from: url),
-                  (response as? HTTPURLResponse)?.statusCode == 200,
-                  NSImage(data: data) != nil else { continue }
-            images[piece.image] = data
-        }
-        return OutfitEntry(date: .now, outfit: outfit, images: images)
-    }
 }
 
 private struct OutfitFeed: Codable { let outfits: [OutfitSnapshot] }
@@ -82,7 +70,7 @@ private struct OutfitWidgetView: View {
                 ForEach(outfit.pieces.prefix(3)) { piece in
                     VStack(spacing: 3) {
                         Group {
-                            if let data = entry.images[piece.image], let image = NSImage(data: data) {
+                            if let image = bundledImage(for: piece) {
                                 Image(nsImage: image).resizable().scaledToFit()
                             } else {
                                 Image(systemName: "hanger").foregroundStyle(.secondary)
@@ -98,6 +86,12 @@ private struct OutfitWidgetView: View {
             Text(outfit.reason).font(.caption2).foregroundStyle(.secondary).lineLimit(2)
         }.padding().widgetURL(URL(string: "https://you-had-me-at-outfit.vercel.app/"))
     }
+}
+
+private func bundledImage(for piece: OutfitPiece) -> NSImage? {
+    guard let filename = URL(string: piece.image)?.lastPathComponent,
+          let url = Bundle.main.url(forResource: filename, withExtension: nil, subdirectory: "WidgetImages") else { return nil }
+    return NSImage(contentsOf: url)
 }
 
 @main struct OutfitWidgetBundle: WidgetBundle { var body: some Widget { OutfitWidget() } }

@@ -12,6 +12,7 @@
 		A10000000000000000000003 /* OutfitWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* OutfitWidget.swift */; };
 		A10000000000000000000004 /* OutfitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* OutfitStore.swift */; };
 		A10000000000000000000005 /* OutfitWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* OutfitWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A10000000000000000000006 /* WidgetImages in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* WidgetImages */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		A20000000000000000000005 /* OutfitWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = OutfitWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000000000000000000006 /* OutfitWidgetApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OutfitWidgetApp.entitlements; sourceTree = "<group>"; };
 		A20000000000000000000007 /* OutfitWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OutfitWidgetExtension.entitlements; sourceTree = "<group>"; };
+		A20000000000000000000008 /* WidgetImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WidgetImages; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AD0000000000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000006 /* WidgetImages in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXGroup section */
 		A80000000000000000000001 = {
@@ -90,6 +103,7 @@
 			children = (
 				A20000000000000000000003 /* OutfitWidget.swift */,
 				A20000000000000000000007 /* OutfitWidgetExtension.entitlements */,
+				A20000000000000000000008 /* WidgetImages */,
 			);
 			path = OutfitWidgetExtension;
 			sourceTree = "<group>";
@@ -138,6 +152,7 @@
 			buildPhases = (
 				A70000000000000000000002 /* Frameworks */,
 				AA0000000000000000000002 /* Sources */,
+				AD0000000000000000000001 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -233,10 +248,11 @@
 				CODE_SIGN_ENTITLEMENTS = OutfitWidgetApp/OutfitWidgetApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 252K78L873;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OutfitWidgetApp/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -248,10 +264,11 @@
 				CODE_SIGN_ENTITLEMENTS = OutfitWidgetApp/OutfitWidgetApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 252K78L873;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OutfitWidgetApp/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.youhadmeatoutfit.desktop.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -262,6 +279,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OutfitWidgetExtension/OutfitWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 252K78L873;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OutfitWidgetExtension/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -277,6 +295,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OutfitWidgetExtension/OutfitWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 252K78L873;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OutfitWidgetExtension/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
