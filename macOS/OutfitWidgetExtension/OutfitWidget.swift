@@ -1,21 +1,26 @@
 import WidgetKit
 import SwiftUI
 import Foundation
+import AppKit
 
-struct OutfitEntry: TimelineEntry { let date: Date; let outfit: OutfitSnapshot }
+struct OutfitEntry: TimelineEntry {
+    let date: Date
+    let outfit: OutfitSnapshot
+    let images: [String: Data]
+}
 
 struct OutfitProvider: TimelineProvider {
     private let feedURL = URL(string: "https://you-had-me-at-outfit.vercel.app/widget-outfits.json")!
 
-    func placeholder(in context: Context) -> OutfitEntry { OutfitEntry(date: .now, outfit: fallbackOutfit) }
+    func placeholder(in context: Context) -> OutfitEntry { OutfitEntry(date: .now, outfit: fallbackOutfit, images: [:]) }
 
     func getSnapshot(in context: Context, completion: @escaping (OutfitEntry) -> Void) {
-        Task { completion(OutfitEntry(date: .now, outfit: await todayOutfit())) }
+        Task { completion(await entry(for: await todayOutfit())) }
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<OutfitEntry>) -> Void) {
         Task {
-            let entry = OutfitEntry(date: .now, outfit: await todayOutfit())
+            let entry = await entry(for: await todayOutfit())
             let nextRefresh = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: .now)) ?? .now.addingTimeInterval(60 * 60 * 24)
             completion(Timeline(entries: [entry], policy: .after(nextRefresh)))
         }
@@ -28,6 +33,18 @@ struct OutfitProvider: TimelineProvider {
               !feed.outfits.isEmpty else { return fallbackOutfit }
         let day = Calendar.current.ordinality(of: .day, in: .year, for: .now) ?? 1
         return feed.outfits[(day - 1) % feed.outfits.count]
+    }
+
+    private func entry(for outfit: OutfitSnapshot) async -> OutfitEntry {
+        var images: [String: Data] = [:]
+        for piece in outfit.pieces {
+            guard let url = URL(string: piece.image),
+                  let (data, response) = try? await URLSession.shared.data(from: url),
+                  (response as? HTTPURLResponse)?.statusCode == 200,
+                  NSImage(data: data) != nil else { continue }
+            images[piece.image] = data
+        }
+        return OutfitEntry(date: .now, outfit: outfit, images: images)
     }
 }
 
@@ -64,10 +81,12 @@ private struct OutfitWidgetView: View {
             HStack(spacing: 10) {
                 ForEach(outfit.pieces.prefix(3)) { piece in
                     VStack(spacing: 3) {
-                        AsyncImage(url: URL(string: piece.image)) { image in
-                            image.resizable().scaledToFit()
-                        } placeholder: {
-                            Image(systemName: "hanger").foregroundStyle(.secondary)
+                        Group {
+                            if let data = entry.images[piece.image], let image = NSImage(data: data) {
+                                Image(nsImage: image).resizable().scaledToFit()
+                            } else {
+                                Image(systemName: "hanger").foregroundStyle(.secondary)
+                            }
                         }
                         .frame(width: 72, height: 72)
                         .background(.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 8))
