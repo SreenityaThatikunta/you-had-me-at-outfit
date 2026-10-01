@@ -10,6 +10,7 @@
   <key>CFBundlePackageType</key><string>XPC!</string>
   <key>CFBundleShortVersionString</key><string>1.0</string>
   <key>CFBundleVersion</key><string>8</string>
+  <key>OutfitAppGroup</key><string>$(TeamIdentifierPrefix)com.youhadmeatoutfit</string>
   <key>NSExtension</key>
   <dict>
     <key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string>

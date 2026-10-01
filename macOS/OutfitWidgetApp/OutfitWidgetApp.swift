@@ -1,6 +1,7 @@
 import SwiftUI
 import WebKit
 import CoreLocation
+import WidgetKit
 
 @main
 struct OutfitWidgetApp: App {
@@ -17,9 +18,11 @@ struct OutfitWebView: NSViewRepresentable {
     func makeNSView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.add(context.coordinator, name: "nativeLocation")
+        configuration.userContentController.add(context.coordinator, name: "saveOutfits")
         configuration.userContentController.addUserScript(WKUserScript(
             source: """
             (() => {
+              window.__outfitSaveWidget = (json) => window.webkit.messageHandlers.saveOutfits.postMessage(json);
               const callbacks = [];
               var cachedLocation = null;
               var cachedError = false;
@@ -80,8 +83,37 @@ struct OutfitWebView: NSViewRepresentable {
         }
 
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-            guard message.name == "nativeLocation" else { return }
-            requestLocation()
+            switch message.name {
+            case "nativeLocation": requestLocation()
+            case "saveOutfits": (message.body as? String).map(saveOutfits)
+            default: break
+            }
+        }
+
+        // Keeps the desktop widget on the same plan as the site, with photos it can show offline.
+        private func saveOutfits(_ json: String) {
+            guard let data = json.data(using: .utf8),
+                  let plan = try? JSONDecoder().decode(OutfitFeed.self, from: data) else { return }
+            let planChanged = OutfitStore.savePlan(data)
+            Task {
+                let imagesAdded = await downloadImages(for: plan)
+                if planChanged || imagesAdded { WidgetCenter.shared.reloadAllTimelines() }
+            }
+        }
+
+        private func downloadImages(for plan: OutfitFeed) async -> Bool {
+            guard let directory = OutfitStore.imagesDirectory else { return false }
+            try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            var added = false
+            for piece in plan.outfits.flatMap(\.pieces) {
+                guard let destination = OutfitStore.imageURL(for: piece),
+                      !FileManager.default.fileExists(atPath: destination.path),
+                      let source = URL(string: piece.image),
+                      let (data, response) = try? await URLSession.shared.data(from: source),
+                      (response as? HTTPURLResponse)?.statusCode == 200 else { continue }
+                added = (try? data.write(to: destination)) != nil || added
+            }
+            return added
         }
 
         func requestLocation() {

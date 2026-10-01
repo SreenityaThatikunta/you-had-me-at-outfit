@@ -22,6 +22,15 @@ The monthly view keeps the rotation practical: weekdays lean towards college/cle
 - Responsive, dark editorial UI with a custom wardrobe mark and favicon.
 - Optimized WebP wardrobe assets committed in `public/wardrobe/`, so the full closet works on Vercel deployments.
 
+## Widgets
+
+Home-screen and desktop widgets show the same outfit as the app:
+
+- **Android:** a small companion app plus a home-screen widget. See [`android/README.md`](android/README.md).
+- **macOS:** a companion app plus a desktop widget. See [`macOS/README.md`](macOS/README.md).
+
+Both companions open the live site. When the site runs inside one, it hands this month's outfit plan to the companion, which saves it for the widget. Without a saved plan, the widgets rotate through `public/widget-outfits.json`.
+
 ## Technical details
 
 | Area | Implementation |
@@ -73,6 +82,9 @@ src/
 public/
   favicon.png        browser tab icon
   wardrobe/          optimized deployable garment images
+  widget-outfits.json fallback outfits for the widgets
+android/             Android companion app and home-screen widget
+macOS/               macOS companion app and desktop widget
 ```
 
 `assets/` remains ignored because it contains high-resolution local source images. The deployable WebP copies live in `public/wardrobe/` instead.
