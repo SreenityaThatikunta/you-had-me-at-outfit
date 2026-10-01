@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Outfit</string>
+    <string name="widget_name">Today\'s outfit</string>
+    <string name="widget_description">A quick look at what to wear today.</string>
+    <string name="widget_title">TODAY\'S OUTFIT</string>
+</resources>

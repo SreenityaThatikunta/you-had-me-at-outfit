@@ -1,0 +1,6 @@
+<resources>
+    <color name="outfit_background">#121212</color>
+    <color name="outfit_text">#FFFFFF</color>
+    <color name="outfit_secondary">#99FFFFFF</color>
+    <color name="outfit_tile">#14FFFFFF</color>
+</resources>

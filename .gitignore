@@ -22,3 +22,14 @@ Assets/
 DerivedData/
 *.xcuserstate
 xcuserdata/
+
+# Local Android/Gradle state and build products
+android/.gradle/
+android/.kotlin/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+*.iml
+*.apk

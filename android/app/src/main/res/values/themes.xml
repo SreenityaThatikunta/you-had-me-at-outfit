@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.Outfit" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/outfit_background</item>
+        <item name="android:statusBarColor">@color/outfit_background</item>
+        <item name="android:navigationBarColor">@color/outfit_background</item>
+    </style>
+</resources>

@@ -9,6 +9,18 @@ import { outfitReason, recommendMonthlyOutfits } from "./utils/recommendation";
 import { groupByCategory } from "./utils/wardrobe";
 
 const CUSTOM_ITEMS_KEY = "you-had-me-at-outfit.custom-items";
+const WIDGET_CATEGORIES = ["top", "bottom", "dress", "shoes"];
+
+function dateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function widgetPieces(outfit) {
+  return WIDGET_CATEGORIES
+    .map((category) => outfit.items.find((item) => item.category === category))
+    .filter((item) => item?.image?.startsWith("/"))
+    .map((item) => ({ name: item.name, image: new URL(item.image, window.location.origin).href }));
+}
 
 function loadCustomItems() {
   try {
@@ -33,6 +45,7 @@ export function App() {
   const monthlyOutfits = useMemo(() => recommendMonthlyOutfits(items, context), [items, context]);
   const todayPlan = useMemo(() => monthlyOutfits.weeks.flat().find((cell) => cell?.dateNumber === new Date().getDate()), [monthlyOutfits]);
   const outfit = todayPlan?.outfit || null;
+  const reason = outfitReason(outfit, weather, todayPlan?.styleLabel || "Today's pick", todayPlan?.dayIndex >= 5 ? "relaxed casual" : "clean casual");
   const grouped = useMemo(() => groupByCategory(items), [items]);
 
   useEffect(() => {
@@ -50,6 +63,20 @@ export function App() {
       // Keep the session usable if the browser refuses another saved image.
     }
   }, [items]);
+
+  // Inside the phone app, hand this month's plan to the home-screen widget so both show the same outfit.
+  useEffect(() => {
+    if (!window.__outfitSaveWidget) return;
+    const now = new Date();
+    const outfits = monthlyOutfits.weeks.flat().filter((cell) => cell?.outfit).map((cell) => ({
+      date: dateKey(new Date(now.getFullYear(), now.getMonth(), cell.dateNumber)),
+      title: "Today's outfit",
+      style: cell.styleLabel,
+      reason: cell.isToday ? reason : "Planned from your closet. Open the app for today's weather.",
+      pieces: widgetPieces(cell.outfit),
+    }));
+    window.__outfitSaveWidget(JSON.stringify({ outfits }));
+  }, [monthlyOutfits, reason]);
 
   async function loadWeather(coords, request) {
     try {
@@ -104,7 +131,7 @@ export function App() {
       </header>
       {view === "outfit" ? <>
         <WeatherPanel weather={weather} city={city} setCity={setCity} loading={loadingWeather} error={weatherError} onCity={loadCityWeather} onGeo={loadLiveWeather} />
-        <RecommendationPanel outfit={outfit} monthlyOutfits={monthlyOutfits} reason={outfitReason(outfit, weather, todayPlan?.styleLabel || "Today's pick", todayPlan?.dayIndex >= 5 ? "relaxed casual" : "clean casual")} onShuffle={() => setShuffleKey((key) => key + 1)} />
+        <RecommendationPanel outfit={outfit} monthlyOutfits={monthlyOutfits} reason={reason} onShuffle={() => setShuffleKey((key) => key + 1)} />
       </> : <>
         <ClosetPanel items={items} grouped={grouped} onRemove={(id) => setItems((current) => current.filter((item) => item.id !== id))} />
       </>}
