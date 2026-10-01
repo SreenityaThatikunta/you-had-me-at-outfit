@@ -21,10 +21,38 @@ struct OutfitWebView: NSViewRepresentable {
             source: """
             (() => {
               const callbacks = [];
-              window.__outfitNativeLocation = (latitude, longitude) => {
-                callbacks.splice(0).forEach(({ success }) => success({ coords: { latitude, longitude, accuracy: 100 } }));
+              var cachedLocation = null;
+              var cachedError = false;
+
+              const deliverLocation = (latitude, longitude) => {
+                callbacks.splice(0).forEach(({ success }) => success({
+                  coords: { latitude, longitude, accuracy: 100 }
+                }));
               };
+
+              window.__outfitNativeLocation = (latitude, longitude) => {
+                cachedLocation = { latitude, longitude };
+                cachedError = false;
+                deliverLocation(latitude, longitude);
+              };
+
+              window.__outfitNativeLocationError = () => {
+                cachedError = true;
+                callbacks.splice(0).forEach(({ error }) => error?.({
+                  code: 2,
+                  message: 'Native location unavailable'
+                }));
+              };
+
               navigator.geolocation.getCurrentPosition = (success, error) => {
+                if (cachedLocation) {
+                  success({ coords: { ...cachedLocation, accuracy: 100 } });
+                  return;
+                }
+                if (cachedError) {
+                  error?.({ code: 2, message: 'Native location unavailable' });
+                  return;
+                }
                 callbacks.push({ success, error });
                 window.webkit.messageHandlers.nativeLocation.postMessage({ request: true });
               };
@@ -36,6 +64,7 @@ struct OutfitWebView: NSViewRepresentable {
         let view = WKWebView(frame: .zero, configuration: configuration)
         view.uiDelegate = context.coordinator
         context.coordinator.webView = view
+        context.coordinator.requestLocation()
         view.load(URLRequest(url: URL(string: "https://you-had-me-at-outfit.vercel.app/")!))
         return view
     }
@@ -55,7 +84,7 @@ struct OutfitWebView: NSViewRepresentable {
             requestLocation()
         }
 
-        private func requestLocation() {
+        func requestLocation() {
             switch locationManager.authorizationStatus {
             case .notDetermined:
                 locationManager.requestWhenInUseAuthorization()
@@ -80,7 +109,7 @@ struct OutfitWebView: NSViewRepresentable {
         }
 
         private func sendLocationError() {
-            webView?.evaluateJavaScript("window.__outfitNativeLocation && window.__outfitNativeLocation(17.385, 78.4867);")
+            webView?.evaluateJavaScript("window.__outfitNativeLocationError && window.__outfitNativeLocationError();")
         }
 
         func webView(
